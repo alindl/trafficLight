@@ -18,8 +18,29 @@ while not done:
         pygame.display.update()
         pygame.time.wait(1000)
 
-# pygame.draw.lines(screen,WHITE,True,)
-        pygame.draw.line(screen,WHITE,(400,300),(500,300),5)
+        # Squat Standing
+        pygame.draw.lines(screen,WHITE,False,((570,300),(600,300),(600,150),(525,150),(600,150),(600,100)),5) # BODY
+        pygame.draw.circle(screen, WHITE, (600,100), 15) # HEAD
+        pygame.display.update()
+
+        pygame.time.wait(1000)
+        # Clear Squat Standing
+        pygame.draw.lines(screen,BLACK,False,((570,300),(600,300),(600,150),(525,150),(600,150),(600,100)),5) # BODY
+        pygame.draw.circle(screen, BLACK, (600,100), 15) # HEAD
+
+        # Squat Squatting
+        pygame.draw.lines(screen,WHITE,False,((570,300),(600,300),(550,275),(600,250),(600,225),(525,225),(600,225),(600,200),),5) # BODY
+        pygame.draw.circle(screen, WHITE, (600,200), 15) # HEAD
+        pygame.display.update()
+        
+        pygame.time.wait(1000)
+        # Clear Squat Squatting
+        pygame.draw.lines(screen,BLACK,False,((570,300),(600,300),(550,275),(600,250),(600,225),(525,225),(600,225),(600,200),),5) # BODY
+        pygame.draw.circle(screen, BLACK, (600,200), 15) # HEAD
+
+        # pygame.draw.line(screen,WHITE,(600,300),(600,100),5) # BODY
+        # pygame.draw.line(screen,WHITE,(525,150),(600,150),5) # ARMS
+        # pygame.draw.line(screen,WHITE,(570,300),(600,300),5) # FEET
 
 
 
