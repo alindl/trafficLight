@@ -4,13 +4,13 @@ import math
 
 def squatFigure(screen,color,heel,kneeHight,kneeLength,hip):
 
-    pygame.draw.lines(screen,color, False,((570,heel),(600,heel),(kneeLength,kneeHight),(600,hip),(600,hip-35),(540,hip-35),(600,hip-35)),6) # BODY
-    pygame.draw.circle(screen, color, (600,hip-60), 12) # HEAD
+    pygame.draw.lines(screen,color, False,((570-40,heel),(600-40,heel),(kneeLength-40,kneeHight),(600-40,hip),(600-40,hip-35),(540-40,hip-35),(600-40,hip-35)),6) # BODY
+    pygame.draw.circle(screen, color, (600-40,hip-60), 12) # HEAD
     pygame.display.update()
 
     # Clear 
-    pygame.draw.lines(screen,BLACK, False,((570,heel),(600,heel),(kneeLength,kneeHight),(600,hip),(600,hip-35),(540,hip-35),(600,hip-35)),6) # BODY
-    pygame.draw.circle(screen, BLACK, (600,hip-60), 12) # HEAD
+    pygame.draw.lines(screen,BLACK, False,((570-40,heel),(600-40,heel),(kneeLength-40,kneeHight),(600-40,hip),(600-40,hip-35),(540-40,hip-35),(600-40,hip-35)),6) # BODY
+    pygame.draw.circle(screen, BLACK, (600-40,hip-60), 12) # HEAD
 
 def jumpingJackFigure(screen,color,body, feet, hip, shoulder, hands, hipDist, feetDist, shoulderDist, handDist, elbow, elbowDist):
 
@@ -55,7 +55,7 @@ def squatGIF(delayTime):
 
 def jumpingJackGIF(moveX,moveY,delayTime):
     # STAND
-    body, feet, hip, hands = 600, 300, 220, 220
+    body, feet, hip, hands = 550, 300, 220, 220
     shoulder = hip - 50
     elbow = math.ceil((shoulder + hands) / 2)
     hipDist, feetDist, shoulderDist, handDist = 10,10,12,25
@@ -66,7 +66,7 @@ def jumpingJackGIF(moveX,moveY,delayTime):
     pygame.time.wait(delayTime)
 
     # HALF JJ
-    body, feet, hip = 600, 300, 230
+    body, feet, hip = 550, 300, 230
     shoulder = hip - 50
     hands = shoulder
     elbow = shoulder
@@ -78,7 +78,7 @@ def jumpingJackGIF(moveX,moveY,delayTime):
     pygame.time.wait(delayTime)
 
     # JJ
-    body, feet, hip, hands= 600, 300, 245, 145 
+    body, feet, hip, hands= 550, 300, 245, 145 
     shoulder = hip - 50
     elbow = math.ceil((shoulder + hands) / 2)
     hipDist, feetDist, shoulderDist, handDist, elbowDist = 10,40,12,12,30
@@ -88,7 +88,7 @@ def jumpingJackGIF(moveX,moveY,delayTime):
     pygame.time.wait(delayTime)
     
     # HALF JJ
-    body, feet, hip = 600, 300, 230
+    body, feet, hip = 550, 300, 230
     shoulder = hip - 50
     hands = shoulder
     elbow = shoulder
@@ -100,7 +100,7 @@ def jumpingJackGIF(moveX,moveY,delayTime):
     pygame.time.wait(delayTime)
 
     # STAND
-    body, feet, hip, hands = 600, 300, 220, 220
+    body, feet, hip, hands = 550, 300, 220, 220
     shoulder = hip - 50
     elbow = math.ceil((shoulder + hands) / 2)
     hipDist, feetDist, shoulderDist, handDist = 10,10,12,25
@@ -159,16 +159,21 @@ while not done:
 
         delayTime = 300
         delayTimeArrow = 150
+        factor = 5 
         for i in range(5):
+            delayTimeArrow = math.ceil(150 / factor)
             pygame.draw.circle(screen, BLACK, (200,800), 150,2)
             pygame.display.update()
-            # jumpingJackGIF(50,100,delayTime)
-            squatGIF(delayTime)
+            jumpingJackGIF(50,100,delayTime)
+            # squatGIF(delayTime)
             pygame.time.wait(delayTime+200)
-            arrowGIF(500,300,100,500,ORANGE,delayTimeArrow)
-            pygame.draw.circle(screen, GREEN, (200,800), 150,2)
-            pygame.display.update()
-            pygame.time.wait(delayTime+200)
+            for j in range(math.ceil(factor/2)):
+                pygame.draw.circle(screen, BLACK, (200,800), 150,2)
+                arrowGIF(500,300,100,500,ORANGE,delayTimeArrow)
+                pygame.draw.circle(screen, GREEN, (200,800), 150,2)
+                pygame.display.update()
+                pygame.time.wait(150)
+            # pygame.time.wait(100)
 
 
 
