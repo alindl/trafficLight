@@ -2,115 +2,6 @@ import pygame
 import time
 import math
 
-def draw_stick_figure(screen,color, x, y,scale, pos):
-    if pos == 0: # Stand
-        bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
-    
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [(10*scale) + x-45, (27*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyDown, [x +45, (27*scale) + y], (2*scale))
-
-        # Arms
-        pygame.draw.line(screen, color, bodyUp , [(9*scale) + x -10, (17*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyUp , [(1*scale) + x +10, (17*scale) + y], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-
-    elif pos == 1 or pos == 3: # Mid Pos
-        downMove = (scale*1.5)
-        bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
-        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
-
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [(10*scale) + x-15, (27*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyDown, [x+15, (27*scale) + y], (2*scale))
-
-        # Arms
-        pygame.draw.line(screen, color, bodyUp, [(9*scale) + x+50,bodyUp[1]], (2*scale))
-        pygame.draw.line(screen, color, bodyUp, [(1*scale) + x-50,bodyUp[1]], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale), y-(4*scale)+(4*scale)+ downMove, (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-
-    elif pos == 2:   # Full Pos
-        downMove = (scale*3)
-        bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
-        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
-
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [(10*scale) + x+10, (27*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyDown, [x -10, (27*scale) + y], (2*scale))
-
-        # Arms
-        pygame.draw.line(screen, color, bodyUp, [(9*scale) + x+50, (1*scale) + y + downMove ], (2*scale))
-        pygame.draw.line(screen, color, bodyUp, [(1*scale) + x-50, (1*scale) + y + downMove ], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-        
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale) , y-(4*scale)+(4*scale) + downMove , (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-    
-    elif pos == 4: # Run first
-
-        bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
-    
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [(10*scale) + x-15, (27*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyDown, [x+15, (27*scale) + y], (2*scale))
-
-        # Arms
-        pygame.draw.line(screen, color, bodyUp , [(10*scale) + x , (15*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyUp , [x , (15*scale) + y], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-
-    elif pos == 5 or pos == 7: # Run second
-        bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
-    
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [(10*scale) + x-45, (27*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyDown, [x +45, (27*scale) + y], (2*scale))
-
-        # Arms
-        pygame.draw.line(screen, color, bodyUp , [(9*scale) + x -10, (17*scale) + y], (2*scale))
-        pygame.draw.line(screen, color, bodyUp , [(1*scale) + x +10, (17*scale) + y], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-
-    elif pos == 6: # Run third
-        bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
-    
-        # Legs
-        pygame.draw.line(screen, color, bodyDown, [bodyDown[0],bodyDown[1]+(scale*10)], (2*scale))
-
-        # Body
-        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
-
-        # Head
-        pygame.draw.ellipse(screen, color, [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)], 0)
-
-
-
 def linesToPoints(screen, color, a, b, divisionFactor,radius):
     x_dist = abs(a[0] - b[0])
     y_dist = abs(a[1] - b[1])
@@ -121,18 +12,114 @@ def linesToPoints(screen, color, a, b, divisionFactor,radius):
             x_plus = True
             if a[1] < b[1]:
                 y_plus = True
-                pygame.draw.circle(screen,color,(a[0]+(x_jump*i),a[1]+(y_jump*i)),radius)
+                pygame.draw.circle(screen,color,(math.ceil(a[0])+(x_jump*i),math.ceil(a[1])+(y_jump*i)),radius)
             else:
                 y_plus = False
-                pygame.draw.circle(screen,color,(a[0]+(x_jump*i),a[1]-(y_jump*i)),radius)
+                pygame.draw.circle(screen,color,(math.ceil(a[0])+(x_jump*i),math.ceil(a[1])-(y_jump*i)),radius)
         else:
             x_plus = False
             if a[1] < b[1]:
                 y_plus = False
-                pygame.draw.circle(screen,color,(a[0]-(x_jump*i),a[1]+(y_jump*i)),radius)
+                pygame.draw.circle(screen,color,(math.ceil(a[0])-(x_jump*i),math.ceil(a[1])+(y_jump*i)),radius)
             else:
                 y_plus = True
-                pygame.draw.circle(screen,color,(a[0]-(x_jump*i),a[1]-(y_jump*i)),radius)
+                pygame.draw.circle(screen,color,(math.ceil(a[0])-(x_jump*i),math.ceil(a[1])-(y_jump*i)),radius)
+
+
+def draw_stick_figure(screen,color, x, y,scale, pos, dim):
+    if pos == 0: # Stand
+        bodyUp =    [(5*scale) + x, (7*scale) + y]
+        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        footLeft  = [(10*scale) + x-45, (27*scale) + y]
+        footRight = [x +45, (27*scale) + y]
+        handLeft =  [(9*scale) + x -10, (17*scale) + y]
+        handRight = [(1*scale) + x +10, (17*scale) + y]
+        headBox =   [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)]
+
+    elif pos == 1 or pos == 3: # Mid Pos
+        downMove = (scale*1.5)
+        bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
+        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
+        footLeft  = [(10*scale) + x-15, (27*scale) + y]
+        footRight = [x+15, (27*scale) + y]
+        handLeft =  [(9*scale) + x+50,bodyUp[1]]
+        handRight = [(1*scale) + x-50,bodyUp[1]]
+        headBox =   [1 + x+(2.5*scale), y-(4*scale)+(4*scale)+ downMove, (10*scale)-(5*scale), (10*scale)-(5*scale)]
+
+    elif pos == 2:   # Full Pos
+        downMove = (scale*3)
+        bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
+        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
+        footLeft  = [(10*scale) + x+10, (27*scale) + y]
+        footRight = [x -10, (27*scale) + y]
+        handLeft =  [(9*scale) + x+50, (1*scale) + y + downMove ]
+        handRight = [(1*scale) + x-50, (1*scale) + y + downMove ]
+        headBox =   [1 + x+(2.5*scale) , y-(4*scale)+(4*scale) + downMove , (10*scale)-(5*scale), (10*scale)-(5*scale)]
+    
+    elif pos == 4: # Run first
+        bodyUp =    [(5*scale) + x, (7*scale) + y]
+        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        footLeft  = [(10*scale) + x-15, (27*scale) + y]  
+        footRight = [x+15, (27*scale) + y]
+        handLeft =  [(10*scale) + x , (15*scale) + y]
+        handRight = [x , (15*scale) + y]
+        headBox =   [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)]
+
+    elif pos == 5 or pos == 7: # Run second
+        bodyUp =    [(5*scale) + x, (7*scale) + y]
+        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        footLeft  = [(10*scale) + x-45, (27*scale) + y]
+        footRight = [x +45, (27*scale) + y]
+        handLeft =  [(9*scale) + x -10, (17*scale) + y]
+        handRight = [(1*scale) + x +10, (17*scale) + y]                                    
+        headBox =   [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)]
+
+    elif pos == 6: # Run third
+        bodyUp =    [(5*scale) + x, (7*scale) + y]
+        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        foot  =     [bodyDown[0],bodyDown[1]+(scale*10)]
+        headBox =   [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)]
+    
+    if pos == 6:
+        # Legs
+        if dim:
+            linesToPoints(screen, color, bodyDown, foot, 8,math.ceil(scale*0.4))
+            # pygame.draw.aaline(screen, color, bodyDown, foot, (2*scale))
+        else:
+            pygame.draw.line(screen, color, bodyDown, foot, (2*scale))
+    else:
+        if dim:
+            # Legs
+            linesToPoints(screen, color, bodyDown, footLeft,  6,math.ceil(scale*0.4))
+            linesToPoints(screen, color, bodyDown, footRight, 6,math.ceil(scale*0.4))
+            # pygame.draw.aaline(screen, color, bodyDown, footLeft, (2*scale))
+            # pygame.draw.aaline(screen, color, bodyDown, footRight, (2*scale))
+            # Arms
+            linesToPoints(screen, color, bodyUp, handLeft,  6,math.ceil(scale*0.4))
+            linesToPoints(screen, color, bodyUp, handRight, 6,math.ceil(scale*0.4))
+            # pygame.draw.aaline(screen, color, bodyUp, handLeft, (2*scale))
+            # pygame.draw.aaline(screen, color, bodyUp, handRight, (2*scale))
+
+        else:
+            # Legs
+            pygame.draw.line(screen, color, bodyDown, footLeft, (2*scale))
+            pygame.draw.line(screen, color, bodyDown, footRight, (2*scale))
+            # Arms
+            pygame.draw.line(screen, color, bodyUp , handLeft, (2*scale))
+            pygame.draw.line(screen, color, bodyUp , handRight, (2*scale))
+
+    # Body
+    if dim:
+        linesToPoints(screen, color, bodyDown, bodyUp, 6,math.ceil(scale*0.4))
+    else:
+        pygame.draw.line(screen, color, bodyDown, bodyUp, (2*scale))
+
+    # Head
+    if dim:
+        linesToPoints(screen, color, bodyDown, bodyUp, 6,math.ceil(scale*0.4))
+        pygame.draw.circle(screen,color,(math.ceil(headBox[0]+(headBox[2]/2)),math.ceil(headBox[1]+(headBox[3]/2+20))),math.ceil(scale*0.4*2),0)
+    else:
+        pygame.draw.ellipse(screen, color, headBox, 0)
 
 
 def squatFigure(screen,color,body,heel,kneeHight,kneeLength,hip):
@@ -219,19 +206,20 @@ while not done:
     pygame.display.update()
     # jumpingJackGIF(-300,50,300)
     # linesToPoints(screen,WHITE,(200,200),(400,400),10,5)
-    for i in range(15):
-        draw_stick_figure(screen,RED,190,50,15,i%4)
-        pygame.display.update()
-        pygame.time.wait(250)
-        draw_stick_figure(screen,DARKRED,190,50,15,i%4)
-        pygame.display.update()
+    for x in range(2):
+        for i in range(15):
+            draw_stick_figure(screen,RED,190,50,15,i%4,x)
+            pygame.display.update()
+            pygame.time.wait(250)
+            draw_stick_figure(screen,DARKRED,190,50,15,i%4,x)
+            pygame.display.update()
 
-    for i in range(15):
-        draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4)
-        pygame.display.update()
-        pygame.time.wait(250)
-        draw_stick_figure(screen,DARKGREEN,190,600,15,(i%4)+4)
-        pygame.display.update()
+        for i in range(15):
+            draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,x)
+            pygame.display.update()
+            pygame.time.wait(250)
+            draw_stick_figure(screen,DARKGREEN,190,600,15,(i%4)+4,x)
+            pygame.display.update()
 
 
 
