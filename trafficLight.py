@@ -1,3 +1,4 @@
+import argparse
 import pygame
 import time
 import math
@@ -25,9 +26,6 @@ def linesToPoints(screen, color, a, b, divisionFactor,radius):
                 y_plus = True
                 pygame.draw.circle(screen,color,(math.ceil(a[0])-(x_jump*i),math.ceil(a[1])-(y_jump*i)),radius)
 
-
-def countDown(text):
-        return image
 
 def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     if pos == 0: # Stand
@@ -87,7 +85,6 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
         # Legs
         if dim:
             linesToPoints(screen, color, bodyDown, foot, 8,math.ceil(scale*0.4))
-            # pygame.draw.aaline(screen, color, bodyDown, foot, (2*scale))
         else:
             pygame.draw.line(screen, color, bodyDown, foot, (2*scale))
     else:
@@ -95,13 +92,9 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
             # Legs
             linesToPoints(screen, color, bodyDown, footLeft,  6,math.ceil(scale*0.4))
             linesToPoints(screen, color, bodyDown, footRight, 6,math.ceil(scale*0.4))
-            # pygame.draw.aaline(screen, color, bodyDown, footLeft, (2*scale))
-            # pygame.draw.aaline(screen, color, bodyDown, footRight, (2*scale))
             # Arms
             linesToPoints(screen, color, bodyUp, handLeft,  6,math.ceil(scale*0.4))
             linesToPoints(screen, color, bodyUp, handRight, 6,math.ceil(scale*0.4))
-            # pygame.draw.aaline(screen, color, bodyUp, handLeft, (2*scale))
-            # pygame.draw.aaline(screen, color, bodyUp, handRight, (2*scale))
 
         else:
             # Legs
@@ -156,31 +149,6 @@ def squatGIF(delayTime):
     # STAND
     squatFigure(screen, WHITE, body, stHeel, stKneeHight, stKneeLength, stHip)
 
-def arrowBlock(scolor,left,top,width,height,delayTime):
-    pygame.draw.rect(screen, ORANGE, [left,top,width,height])
-
-
-def arrowGIF(left,top,width,height,color,delayTime):
-    numBlocks = 10
-    block = math.floor(height/numBlocks)
-    arrowWidth = math.ceil(width/2)
-    for i in range(numBlocks):
-        pygame.draw.rect(screen, color, [left,(top+(block*i)),width,block])
-        pygame.draw.rect(screen, color, [left,(top+(block*(i+1))),width,block])
-        if i is not 0:
-            pygame.draw.rect(screen, BLACK, [left,(top+(block*(i-1))),width,block])
-        else:
-            pygame.draw.rect(screen, BLACK, [left,(top+(block*(numBlocks))),width,block])
-            pygame.draw.rect(screen, BLACK, [left,(top+(block*(numBlocks-1))),width,block])
-        pygame.display.update()
-        pygame.time.wait(delayTime)
-    pygame.draw.polygon(screen, color,[[left,top+height-(block+arrowWidth)],[left,top+height+(block+arrowWidth)],[left-width,top+height]])
-    pygame.display.update()
-    pygame.time.wait(delayTime)
-    pygame.draw.rect(screen, BLACK, [left,(top+(block*(numBlocks))),width,block])
-    pygame.draw.rect(screen, BLACK, [left,(top+(block*(numBlocks-1))),width,block])
-    pygame.draw.polygon(screen, BLACK,[[left,top+height-(block+arrowWidth)],[left,top+height+(block+arrowWidth)],[left-width,top+height]])
-
 
 BLACK      = ( 0, 0, 0)
 WHITE      = ( 255, 255, 255)
@@ -202,63 +170,102 @@ rect = screen.get_rect()
 done = False
 clock = pygame.time.Clock()
 
+parser = argparse.ArgumentParser(description='Get metric and number.')
+parser.add_argument('metric', choices=['counter', 'seconds'])
+parser.add_argument('number', type=int)
+args = parser.parse_args()
+
 while not done:
         
     pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
     pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
-    # pygame.display.update()
-    # font_surface = font.render("15", 1, RED)
-    # font_rect = font_surface.get_rect()
-    # font_rect.topleft = (10,10)
-    # screen.blit(font_surface,(65,110))
-    # pygame.display.update()
-    redSeconds = 25
+    redSeconds = args.number
     greenSeconds = 5
     dimmed = True
 
-    for i in range(5*redSeconds):
-        if (redSeconds-(math.ceil(i/5))) < 1:
-            break
-        font_surface = font.render(str(redSeconds-(math.ceil(i/5))), 1, RED)
-        font_rect = font_surface.get_rect()
-        font_rect.topleft = (10,10)
-        screen.blit(font_surface,(65,660))
+    # RED PHASE
+    ## Seconds Mode
+    if args.metric == 'seconds':
+        for i in range(5*redSeconds):
+            if (redSeconds-(math.ceil(i/5))) < 1:
+                break
+            font_surface = font.render(str(redSeconds-(math.ceil(i/5))), 1, RED)
+            font_rect = font_surface.get_rect()
+            font_rect.topleft = (10,10)
+            screen.blit(font_surface,(65,660))
 
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    dimmed = False if dimmed else True
-                    pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
-                if event.key == pygame.K_ESCAPE:
-                    done = True
-                    sys.exit()
-        draw_stick_figure(screen,RED,190,50,15,i%4,dimmed)
-        pygame.display.update()
-        pygame.time.wait(200)
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        dimmed = False if dimmed else True
+                        pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+                    if event.key == pygame.K_ESCAPE:
+                        done = True
+                        sys.exit()
+            draw_stick_figure(screen,RED,190,50,15,i%4,dimmed)
+            pygame.display.update()
+            pygame.time.wait(200)
 
-        pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
-        pygame.display.update()
-        
-        if i%5 == 0:
-            pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
-            if not dimmed:
-                redSeconds -= 1
+            pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
+            pygame.display.update()
+            
+            if i%5 == 0:
+                pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+                if not dimmed and (args.metric == 'seconds'):
+                    redSeconds -= 1
 
-        if i > (5*redSeconds):
-            break
+                if dimmed and (args.metric == 'counter'):
+                    redSeconds += 1
 
+            if i > (5*redSeconds):
+                break
+
+    ## Counter Mode
+    elif args.metric == 'counter':
+        i = 0
+        second = 0
+        while redSeconds > 0:
+            if redSeconds < 1:
+                break
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        redSeconds -= 1
+                        pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+                    if event.key == pygame.K_RETURN:
+                        dimmed = False if dimmed else True
+                    if event.key == pygame.K_ESCAPE:
+                        done = True
+                        sys.exit()
+            draw_stick_figure(screen,RED,190,50,15,i,dimmed)
+
+            font_surface = font.render(str(redSeconds), 1, RED)
+            font_rect = font_surface.get_rect()
+            font_rect.topleft = (10,10)
+            screen.blit(font_surface,(65,660))
+
+            pygame.display.update()
+            pygame.time.wait(200)
+
+            pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
+            pygame.display.update()
+            
+            i += 1
+            if i == 4:
+                i = 0
     pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
 
-
+    # GREEN PHASE
     for i in range(5*greenSeconds):
         draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,False)
-        pygame.display.update()
-        pygame.time.wait(200)
 
         font_surface = font.render(str(greenSeconds-(math.ceil(i/5))), 1, GREEN)
         font_rect = font_surface.get_rect()
         font_rect.topleft = (10,10)
         screen.blit(font_surface,(65,110))
+        pygame.display.update()
+        pygame.time.wait(200)
 
         pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
         pygame.display.update()
