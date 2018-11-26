@@ -26,6 +26,9 @@ def linesToPoints(screen, color, a, b, divisionFactor,radius):
                 pygame.draw.circle(screen,color,(math.ceil(a[0])-(x_jump*i),math.ceil(a[1])-(y_jump*i)),radius)
 
 
+def countDown(text):
+        return image
+
 def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     if pos == 0: # Stand
         bodyUp =    [(5*scale) + x, (7*scale) + y]
@@ -179,8 +182,6 @@ def arrowGIF(left,top,width,height,color,delayTime):
     pygame.draw.polygon(screen, BLACK,[[left,top+height-(block+arrowWidth)],[left,top+height+(block+arrowWidth)],[left-width,top+height]])
 
 
-
-
 BLACK      = ( 0, 0, 0)
 WHITE      = ( 255, 255, 255)
 # BACKLIGHT
@@ -192,10 +193,12 @@ RED        = (255,   0,   0)
 ORANGE     = (255, 165,   0)
 
 pygame.init()
+pygame.font.init()
 screenWidth = 1920
 screenLength = 1080
 screen = pygame.display.set_mode((screenWidth, screenLength))
-
+font = pygame.font.Font(None, 512)
+rect = screen.get_rect()
 done = False
 clock = pygame.time.Clock()
 
@@ -203,27 +206,72 @@ while not done:
         
     pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
     pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
-    pygame.display.update()
-    # jumpingJackGIF(-300,50,300)
-    # linesToPoints(screen,WHITE,(200,200),(400,400),10,5)
-    for x in range(2):
-        for i in range(15):
-            draw_stick_figure(screen,RED,190,50,15,i%4,x)
-            pygame.display.update()
-            pygame.time.wait(250)
-            draw_stick_figure(screen,DARKRED,190,50,15,i%4,x)
-            pygame.display.update()
+    # pygame.display.update()
+    # font_surface = font.render("15", 1, RED)
+    # font_rect = font_surface.get_rect()
+    # font_rect.topleft = (10,10)
+    # screen.blit(font_surface,(65,110))
+    # pygame.display.update()
+    redSeconds = 25
+    greenSeconds = 5
+    dimmed = True
 
-        for i in range(15):
-            draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,x)
-            pygame.display.update()
-            pygame.time.wait(250)
-            draw_stick_figure(screen,DARKGREEN,190,600,15,(i%4)+4,x)
-            pygame.display.update()
+    for i in range(5*redSeconds):
+        if (redSeconds-(math.ceil(i/5))) < 1:
+            break
+        font_surface = font.render(str(redSeconds-(math.ceil(i/5))), 1, RED)
+        font_rect = font_surface.get_rect()
+        font_rect.topleft = (10,10)
+        screen.blit(font_surface,(65,660))
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    dimmed = False if dimmed else True
+                    pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+                if event.key == pygame.K_ESCAPE:
+                    done = True
+                    sys.exit()
+        draw_stick_figure(screen,RED,190,50,15,i%4,dimmed)
+        pygame.display.update()
+        pygame.time.wait(200)
+
+        pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
+        pygame.display.update()
+        
+        if i%5 == 0:
+            pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+            if not dimmed:
+                redSeconds -= 1
+
+        if i > (5*redSeconds):
+            break
+
+    pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
 
 
+    for i in range(5*greenSeconds):
+        draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,False)
+        pygame.display.update()
+        pygame.time.wait(200)
 
+        font_surface = font.render(str(greenSeconds-(math.ceil(i/5))), 1, GREEN)
+        font_rect = font_surface.get_rect()
+        font_rect.topleft = (10,10)
+        screen.blit(font_surface,(65,110))
 
+        pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+        pygame.display.update()
+
+        if i%5 == 0:
+            pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    done = True
+                    sys.exit()
+
+    pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
 
 
     # pygame.draw.circle(screen, DARKGREEN, (200,800), 150)
