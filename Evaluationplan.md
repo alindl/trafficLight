@@ -1,7 +1,7 @@
 # Testing environment:
 Tablet connected to laptop that runs the traffic light simulation.
 
-The connection is run over WiFi using TeamViewer. (If no WiFi available -> Mobile Hotspot)
+The connection is establish via WiFi using TeamViewer. (If no WiFi available -> Mobile Hotspot)
 
 We tell participants to imagine walking to a pedestrian traffic light that is red.
 Participants encounter the display, showing the prototype in either counter or seconds mode.
@@ -16,20 +16,9 @@ After that, we ask them some questions about this interaction.
 ## Did they react to the prototype as hoped?
 
 
-### BOTH
-
-- What does this traffic light do?
-
-- What were you supposed to do at the traffic light?
-
-- How would you have built it to make it easy to understand?
-
-- Is the reward for you that the traffic light changes to green faster motivating enough ?
-
-
 ### YES
 
-- How easy or hard was it to understand what you were supposed to do? (On a scale 1 - 10)
+- How easy or hard was it to understand what you were supposed to do (understood it right away - took some time - got it only as the others were doing it)?
 
 - How much control did you have on the time?
 
@@ -47,3 +36,12 @@ After that, we ask them some questions about this interaction.
 - Would you have done any kind of sport at all to make it go green faster?
 
 
+### BOTH
+
+- What does this traffic light do?
+
+- What were you supposed to do at the traffic light?
+
+- How would you have built it to make it easy to understand?
+
+- Is the reward for you that the traffic light changes to green faster motivating enough ?
