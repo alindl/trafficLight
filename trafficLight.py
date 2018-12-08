@@ -30,7 +30,7 @@ def linesToPoints(screen, color, a, b, divisionFactor,radius):
 def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     if pos == 0: # Stand
         bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        bodyDown =  [(5*scale) + x, (15*scale) + y]
         footLeft  = [(10*scale) + x-45, (27*scale) + y]
         footRight = [x +45, (27*scale) + y]
         handLeft =  [(9*scale) + x -10, (17*scale) + y]
@@ -40,7 +40,7 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     elif pos == 1 or pos == 3: # Mid Pos
         downMove = (scale*1.5)
         bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
-        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
+        bodyDown =  [(5*scale) + x, (15*scale) + y + downMove ]
         footLeft  = [(10*scale) + x-15, (27*scale) + y]
         footRight = [x+15, (27*scale) + y]
         handLeft =  [(9*scale) + x+50,bodyUp[1]]
@@ -50,7 +50,7 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     elif pos == 2:   # Full Pos
         downMove = (scale*3)
         bodyUp =    [(5*scale) + x, (7*scale) + y + downMove ]
-        bodyDown =  [(5*scale) + x, (17*scale) + y + downMove ]
+        bodyDown =  [(5*scale) + x, (15*scale) + y + downMove ]
         footLeft  = [(10*scale) + x+10, (27*scale) + y]
         footRight = [x -10, (27*scale) + y]
         handLeft =  [(9*scale) + x+50, (1*scale) + y + downMove ]
@@ -59,7 +59,7 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
     
     elif pos == 4: # Run first
         bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        bodyDown =  [(5*scale) + x, (15*scale) + y]
         footLeft  = [(10*scale) + x-15, (27*scale) + y]  
         footRight = [x+15, (27*scale) + y]
         handLeft =  [(10*scale) + x , (15*scale) + y]
@@ -68,7 +68,7 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
 
     elif pos == 5 or pos == 7: # Run second
         bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        bodyDown =  [(5*scale) + x, (15*scale) + y]
         footLeft  = [(10*scale) + x-45, (27*scale) + y]
         footRight = [x +45, (27*scale) + y]
         handLeft =  [(9*scale) + x -10, (17*scale) + y]
@@ -77,7 +77,7 @@ def draw_stick_figure(screen,color, x, y,scale, pos, dim):
 
     elif pos == 6: # Run third
         bodyUp =    [(5*scale) + x, (7*scale) + y]
-        bodyDown =  [(5*scale) + x, (17*scale) + y]
+        bodyDown =  [(5*scale) + x, (15*scale) + y]
         foot  =     [bodyDown[0],bodyDown[1]+(scale*10)]
         headBox =   [1 + x+(2.5*scale), y-(4*scale)+(5*scale), (10*scale)-(5*scale), (10*scale)-(5*scale)]
     
@@ -163,7 +163,7 @@ ORANGE     = (255, 165,   0)
 pygame.init()
 pygame.font.init()
 screenWidth = 1920
-screenLength = 1080
+screenLength = 1090
 screen = pygame.display.set_mode((screenWidth, screenLength))
 font = pygame.font.Font(None, 512)
 rect = screen.get_rect()
@@ -186,13 +186,18 @@ while not done:
     # RED PHASE
     ## Seconds Mode
     if args.metric == 'seconds':
-        for i in range(5*redSeconds):
-            if (redSeconds-(math.ceil(i/5))) < 1:
+        for i in range(4*redSeconds):
+            if (redSeconds-(math.ceil(i/4))) < 1:
                 break
-            font_surface = font.render(str(redSeconds-(math.ceil(i/5))), 1, RED)
-            font_rect = font_surface.get_rect()
-            font_rect.topleft = (10,10)
-            screen.blit(font_surface,(65,660))
+          
+            if dimmed:
+                if (redSeconds-(math.ceil(i/4))) < 10:
+                    font_surface = font.render("0" + str(redSeconds-(math.ceil(i/4))), 1, RED)
+                else:
+                    font_surface = font.render(str(redSeconds-(math.ceil(i/4))), 1, RED)
+                font_rect = font_surface.get_rect()
+                font_rect.topleft = (10,10)
+                screen.blit(font_surface,(65,660))
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -204,18 +209,32 @@ while not done:
                         sys.exit()
             draw_stick_figure(screen,RED,190,50,15,i%4,dimmed)
             pygame.display.update()
-            pygame.time.wait(200)
+            pygame.time.wait(250)
+            
+            if not dimmed and i%2 == 0:
+                if i%4 == 0:
+                    redSeconds -= 1
+                pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+                if (redSeconds-(math.ceil(i/4))) < 10:
+                    font_surface = font.render("0" + str(redSeconds-(math.ceil(i/4))), 1, RED)
+                else:
+                    font_surface = font.render(str(redSeconds-(math.ceil(i/4))), 1, RED)
+                font_rect = font_surface.get_rect()
+                font_rect.topleft = (10,10)
+                screen.blit(font_surface,(65,660))
+                pygame.display.update()
+                 
 
             pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
             pygame.display.update()
             
-            if i%5 == 0:
+            if i%4 == 0 and dimmed:
                 pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
-                if not dimmed and (args.metric == 'seconds'):
-                    redSeconds -= 1
+            #     if not dimmed and (args.metric == 'seconds'):
+            #         redSeconds -= 1
 
-                if dimmed and (args.metric == 'counter'):
-                    redSeconds += 1
+            #     if dimmed and (args.metric == 'counter'):
+            #         redSeconds += 1
 
             if i > (5*redSeconds):
                 break
@@ -246,7 +265,7 @@ while not done:
             screen.blit(font_surface,(65,660))
 
             pygame.display.update()
-            pygame.time.wait(200)
+            pygame.time.wait(250)
 
             pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
             pygame.display.update()
@@ -257,20 +276,24 @@ while not done:
     pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
 
     # GREEN PHASE
-    for i in range(5*greenSeconds):
-        draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,False)
+    for i in range(4*greenSeconds):
+        # draw_stick_figure(screen,GREEN,190,600,15,(i%4)+4,False)
+        pygame.draw.rect(screen, GREEN, [0,screenLength/2,screenLength/2,screenLength/2])
 
-        font_surface = font.render(str(greenSeconds-(math.ceil(i/5))), 1, GREEN)
+        if (greenSeconds-(math.ceil(i/4))) < 10:
+            font_surface = font.render("0" + str(greenSeconds-(math.ceil(i/4))), 1, GREEN)
+        else:
+            font_surface = font.render(str(greenSeconds-(math.ceil(i/4))), 1, GREEN)
         font_rect = font_surface.get_rect()
         font_rect.topleft = (10,10)
         screen.blit(font_surface,(65,110))
         pygame.display.update()
-        pygame.time.wait(200)
+        pygame.time.wait(250)
 
-        pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
+        # pygame.draw.rect(screen, DARKGREEN, [0,screenLength/2,screenLength/2,screenLength/2])
         pygame.display.update()
 
-        if i%5 == 0:
+        if i%4 == 0:
             pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
