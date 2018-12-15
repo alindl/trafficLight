@@ -182,10 +182,36 @@ while not done:
     redSeconds = args.number
     greenSeconds = 5
     dimmed = True
+    startLoop = True
 
     # RED PHASE
     ## Seconds Mode
     if args.metric == 'seconds':
+        font_surface = font.render(str(redSeconds), 1, RED)
+        font_rect = font_surface.get_rect()
+        font_rect.topleft = (10,10)
+        screen.blit(font_surface,(65,660))
+        i = 0
+
+        while startLoop:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        startLoop = False
+                        dimmed = False
+            draw_stick_figure(screen,RED,190,50,15,i,dimmed)
+
+            pygame.display.update()
+            pygame.time.wait(250)
+
+            pygame.draw.rect(screen, DARKRED, [0,0,screenLength/2,screenLength/2])
+            pygame.display.update()
+            
+            i += 1
+            if i == 4:
+                i = 0
+
+
         for i in range(4*redSeconds):
             if (redSeconds-(math.ceil(i/4))) < 1:
                 break
